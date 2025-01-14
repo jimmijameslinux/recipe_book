@@ -5,6 +5,8 @@ const RecipeDetails = ({ recipe }) => {
     return <p>Loading...</p>;
   }
 
+  console.log(recipe.vegetarian);
+
   return (
     <div className="recipe-details-container">
       <div className="recipe-header">

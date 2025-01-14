@@ -43,9 +43,11 @@ const SearchBar = ({ onSearch }) => {
         className="form-select"
       >
         <option value="all">All Categories</option>
-        <option value="vegan">Vegan</option>
-        <option value="vegetarian">Vegetarian</option>
-        <option value="dessert">Dessert</option>
+        <option value="lunch">Lunch</option>
+        <option value="soup">Soup</option>
+        <option value="main course">Main course</option>
+        <option value="main dish">Main dish</option>
+        <option value="dinner">Dinner</option>
       </select>
       <button type="submit" className="btn btn-secondary">
         Search

@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 const Home = () => {
   const [recipes, setRecipes] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [e, setError] = useState("");
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -13,6 +14,13 @@ const Home = () => {
         const response = await axios.get(
           `https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}`
         );
+
+        if (response.status === 402) {
+          throw new Error("Api issue");
+          return;
+        }
+
+        console.log(response.status);
 
         const recipesWithDetails = await Promise.all(
           response.data.results.map(async (recipe) => {
@@ -22,6 +30,8 @@ const Home = () => {
             return {
               ...recipe,
               extendedIngredients: detailsResponse.data.extendedIngredients,
+              vegetarian: detailsResponse.data.vegetarian,
+              dishTypes: detailsResponse.data.dishTypes,
             };
           })
         );
@@ -29,7 +39,8 @@ const Home = () => {
         setRecipes(recipesWithDetails);
         setSearchResults(recipesWithDetails); // Initialize search results
       } catch (error) {
-        console.error("Error fetching recipes:", error);
+        console.error("Error fetching recipes:", error.message);
+        setError(error.message);
       }
     };
 
@@ -42,6 +53,7 @@ const Home = () => {
     // Filter by search type: name or ingredients
     if (query) {
       filtered = filtered.filter((recipe) => {
+        // console.log(recipe);
         if (searchBy === "name") {
           return recipe.title.toLowerCase().includes(query.toLowerCase());
         } else if (searchBy === "ingredients") {
@@ -63,6 +75,8 @@ const Home = () => {
     setSearchResults(filtered);
   };
 
+  // console.log(e);
+
   return (
     <div className="home">
       <h1>Recipe Book</h1>
@@ -71,8 +85,11 @@ const Home = () => {
           handleSearch(query, searchBy, category)
         }
       />
-
-      {recipes ? <RecipeList recipes={searchResults} /> : <p>Loading...</p>}
+      {recipes.length > 0 ? (
+        <RecipeList recipes={searchResults} />
+      ) : (
+        <p>{e ? <b style={{ color: "red" }}>{e}</b> : <b>loading</b>}</p>
+      )}
     </div>
   );
 };
