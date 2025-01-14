@@ -1,11 +1,10 @@
 import React from "react";
-
 const RecipeDetails = ({ recipe }) => {
   if (!recipe) {
     return <p>Loading...</p>;
   }
 
-  console.log(recipe.vegetarian);
+  console.log(recipe.summary);
 
   return (
     <div className="recipe-details-container">
@@ -23,7 +22,7 @@ const RecipeDetails = ({ recipe }) => {
             ))}
           </ul>
         </div>
-
+        // Button in RecipeDetails.js ;
         <div className="instructions-section">
           <h2>Instructions</h2>
           {recipe.instructions ? (

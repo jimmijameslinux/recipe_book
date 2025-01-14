@@ -32,6 +32,7 @@ const Home = () => {
               extendedIngredients: detailsResponse.data.extendedIngredients,
               vegetarian: detailsResponse.data.vegetarian,
               dishTypes: detailsResponse.data.dishTypes,
+              summary: detailsResponse.data.summary,
             };
           })
         );
